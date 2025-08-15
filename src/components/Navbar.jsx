@@ -5,7 +5,7 @@ const Navbar = () => {
   return (
     <nav>
       <div id='logo'>
-        <img src="/diet.png" alt="logo" width={50} />
+        <img src="./diet.png" alt="logo" width={50} />
       <h2>Recipe Finder App</h2>
       </div>
       <Link id='home' to={"/"}>
