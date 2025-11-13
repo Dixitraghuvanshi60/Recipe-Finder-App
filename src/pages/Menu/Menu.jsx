@@ -1,25 +1,32 @@
 import { useEffect, useState } from "react";
 import FoodBox from "../../components/FoodBox";
-import "./Menu.css";
-import data from "../../data/meals.json"; // ✅ Import your local JSON file
+import "./Menu.css"
 
 const Menu = () => {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    // ✅ Load local data instead of fetching from API
-    setCategories(data.categories);
+    // ✅ Always use relative path from public folder
+    fetch(`${import.meta.env.BASE_URL}data/meals.json`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Loaded data:", data); // 👀 debug check
+        // If your JSON has a "categories" key
+        setCategories(data.categories || []);
+      })
+      .catch((err) => console.error("Error loading JSON:", err));
   }, []);
 
   return (
     <section id="menu">
       <div id="categoryContainer">
-        {categories.map((category) => (
-          <FoodBox
-            key={category.idCategory}
-            category={category}
-          />
-        ))}
+        {categories.length === 0 ? (
+          <p>Loading meals...</p>
+        ) : (
+          categories.map((category) => (
+            <FoodBox key={category.idCategory} category={category} />
+          ))
+        )}
       </div>
     </section>
   );
